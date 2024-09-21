@@ -3,7 +3,7 @@
     {
       "id": "1",
       "title": "Buy groceries",
-      "description": "",
+      "description": "we need to buy onions",
       "completed": false,
       "user_id": 3,
       "category": "Trabajo",
@@ -26,6 +26,15 @@
       "user_id": 3,
       "category": "Personal",
       "date": "2024-10-29"
+    },
+    {
+      "id": "6183",
+      "title": "Finish auth",
+      "category": "Work",
+      "date": "2024-09-03",
+      "description": "asdasd",
+      "completed": false,
+      "user_id": "3"
     }
   ],
   "users": [
