@@ -1,12 +1,13 @@
 {
     "todos": [
-      { "id": 1, "title": "Buy groceries", "completed": false },
-      { "id": 2, "title": "Clean the house", "completed": true },
-      { "id": 3, "title": "Finish project", "completed": false }
+      { "id": 1, "title": "Buy groceries","description":"", "completed": false ,"user_id":3, "category":"Trabajo"},
+      { "id": 2, "title": "Clean the house","description":"","completed": true ,"user_id":3,"category":"Trabajo"},
+      { "id": 3, "title": "Finish project","description":"","completed": false ,"user_id":3,"category":"Personal"}
     ],
     "users": [
-      { "id": 1, "name": "John Doe" },
-      { "id": 2, "name": "Jane Smith" }
+      { "id": 1, "name": "John Doe" , "email": "JohnDoe@gmail.com" ,"password":"Qwerty123."},
+      { "id": 2, "name": "Jane Smith" , "email": "JaneSmith@gmail.com" ,"password":"Qwerty123."},
+      { "id": 3, "name": "Admin" , "email": "admin@gmail.com" ,"password":"Qwerty123."}
     ]
   }
   

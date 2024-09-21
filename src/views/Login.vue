@@ -1,63 +1,62 @@
 <template>
-    <div class="login-container">
-      <div class="info-section">
-        <h2>Welcome to the To-Do List App</h2>
-        <p>
-          A well-organized to-do list is an essential tool for productivity. It helps you:
-        </p>
-        <ul>
-          <li>Stay on top of your daily tasks</li>
-          <li>Keep track of long-term goals</li>
-          <li>Reduce stress by organizing your thoughts</li>
-          <li>Increase motivation as you check off completed tasks</li>
-        </ul>
-        <p>
-          Our app is designed to simplify your life by offering a clean, intuitive interface to manage your tasks. Simply log in and start organizing your day!
-        </p>
-      </div>
-      <div class="login-section">
-        <h2>Login</h2>
-        <form @submit.prevent="login">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" v-model="email" id="email" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" v-model="password" id="password" required />
-          </div>
-          <button type="submit">Login</button>
-          <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-        </form>
-      </div>
+  <div class="login-container">
+    <div class="info-section">
+      <h2>Welcome to the To-Do List App</h2>
+      <p>A well-organized to-do list is an essential tool for productivity. It helps you:</p>
+      <ul>
+        <li>Stay on top of your daily tasks</li>
+        <li>Keep track of long-term goals</li>
+        <li>Reduce stress by organizing your thoughts</li>
+        <li>Increase motivation as you check off completed tasks</li>
+      </ul>
+      <p>
+        Our app is designed to simplify your life by offering a clean, intuitive interface to manage your tasks. Simply
+        log in and start organizing your day!
+      </p>
     </div>
-  </template>
+    <div class="login-section">
+      <h2>Login</h2>
+      <form @submit.prevent="login">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" v-model="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" v-model="password" id="password" required />
+        </div>
+        <button type="submit">Login</button>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      </form>
+    </div>
+  </div>
+</template>
   
   <script>
-  import { ref } from 'vue';
+  import { ref ,computed} from 'vue';
   import { useRouter } from 'vue-router';
+  import {useAuthStore} from '../store/authStore';
   
   export default {
     setup() {
       const email = ref('');
       const password = ref('');
-      const errorMessage = ref('');
+      const store = useAuthStore();
       const router = useRouter();
-  
-      const login = () => {
-        // Mock login validation
-        if (email.value === 'test@example.com' && password.value === 'password') {
-          router.push('/dashboard'); // Navigate to dashboard on successful login
-        } else {
-          errorMessage.value = 'Invalid email or password';
-        }
-      };
+      const errorMessage = computed(() => store.errorMessage);
+      
+      const login = async () => {
+      await store.login(email.value, password.value);
+      if (store.isAuthenticated) {
+        router.push('/dashboard');
+      }
+    };
   
       return {
         email,
         password,
-        errorMessage,
         login,
+        errorMessage,
       };
     },
   };
