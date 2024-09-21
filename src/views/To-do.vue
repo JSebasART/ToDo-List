@@ -2,6 +2,26 @@
   <div class="tasks-container">
     <h2>My To-Do List</h2>
 
+    <!-- Filter by category and completion status -->
+    <div class="filter-section">
+      <label for="category">Category:</label>
+      <select v-model="filter.category">
+        <option value="">All</option>
+        <option value="Work">Work</option>
+        <option value="Personal">Personal</option>
+        <option value="Misc">Misc</option>
+      </select>
+
+      <label for="completed">Status:</label>
+      <select v-model="filter.completed">
+        <option value="">All</option>
+        <option :value="true">Completed</option>
+        <option :value="false">Pending</option>
+      </select>
+
+      <button @click="applyFilter">Apply Filter</button>
+    </div>
+
     <!-- Button to show/hide the new task form -->
     <button @click="toggleNewTaskForm">{{ showNewTaskForm ? 'Cancel' : 'New Task' }}</button>
 
@@ -52,8 +72,6 @@
 import { ref, onMounted } from 'vue';
 import todoService from '../services/todoServices';
 import NewTaskForm from '../components/NewTaskForm.vue';
-import { useAuthStore } from '../store/authStore';
-import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -69,10 +87,14 @@ export default {
       date: '',
       description: '',
     });
+    const filter = ref({
+      category: '',
+      completed: '',
+    });
 
     const fetchTasks = async () => {
       try {
-        tasks.value = await todoService.getTasks();
+        tasks.value = await todoService.getTasks(filter.value);
       } catch (error) {
         console.error('Error fetching tasks:', error.message);
       }
@@ -143,6 +165,10 @@ export default {
       }
     };
 
+    const applyFilter = () => {
+      fetchTasks(); // Re-fetch tasks based on selected filters
+    };
+
     onMounted(fetchTasks);
 
     return {
@@ -155,6 +181,8 @@ export default {
       startEdit,
       updateTask,
       cancelEdit,
+      filter,
+      applyFilter,
       editingTaskId,
       taskEditData,
     };
@@ -196,5 +224,17 @@ button {
 
 button:hover {
   background-color: #38a374;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.filter-section select {
+  margin-right: 10px;
+}
+
+.filter-section button {
+  margin-left: 10px;
 }
 </style>

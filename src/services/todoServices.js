@@ -3,14 +3,24 @@ import { useAuthStore } from '../store/authStore';
 
 const API_URL = 'http://localhost:3000'; 
 
-const getTasks = async () => {
+const getTasks = async (filter = {}) => {
   const authStore = useAuthStore();
-  const userId = authStore.user.id;
+  const userId = authStore.user.id; // Assuming you have user info in the auth store
 
   try {
-    const response = await axios.get(`${API_URL}/todos`, {
-      params: { user_id: userId },
-    });
+    let url = `${API_URL}/todos?user_id=${userId}`;
+
+    // Add filtering by completed status
+    if (filter.completed !== undefined) {
+      url += `&completed=${filter.completed}`;
+    }
+
+    // Add filtering by category
+    if (filter.category && ['Work', 'Personal', 'Misc'].includes(filter.category)) {
+      url += `&category=${filter.category}`;
+    }
+
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching tasks: ${error.message}`);
@@ -21,15 +31,22 @@ const createTask = async (taskData) => {
   const authStore = useAuthStore();
   const userId = authStore.user.id;
 
+  // Ensure the required fields are present
   if (!taskData.title) {
     throw new Error('Task title is required');
+  }
+
+  // Restrict the categories to "Work", "Personal", and "Misc"
+  const allowedCategories = ['Work', 'Personal', 'Misc'];
+  if (!allowedCategories.includes(taskData.category)) {
+    throw new Error(`Invalid category. Must be one of: ${allowedCategories.join(', ')}`);
   }
 
   try {
     const newTask = {
       ...taskData,
-      user_id: userId,
-      completed: false,
+      user_id: userId, // Automatically set the user_id
+      completed: false, // Default to false
     };
 
     const response = await axios.post(`${API_URL}/todos`, newTask);
