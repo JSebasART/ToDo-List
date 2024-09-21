@@ -2,20 +2,19 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore'; 
 
 const API_URL = 'http://localhost:3000'; 
+const allowedCategories = ['Trabajo', 'Personal', 'Etc'];
 
 const getTasks = async (filter = {}) => {
   const authStore = useAuthStore();
-  const userId = authStore.user.id; // Assuming you have user info in the auth store
+  const userId = authStore.user.id;
 
   try {
     let url = `${API_URL}/todos?user_id=${userId}`;
 
-    // Add filtering by completed status
     if (filter.completed !== undefined) {
       url += `&completed=${filter.completed}`;
     }
 
-    // Add filtering by category
     if (filter.category && ['Work', 'Personal', 'Misc'].includes(filter.category)) {
       url += `&category=${filter.category}`;
     }
@@ -31,13 +30,10 @@ const createTask = async (taskData) => {
   const authStore = useAuthStore();
   const userId = authStore.user.id;
 
-  // Ensure the required fields are present
   if (!taskData.title) {
     throw new Error('Task title is required');
   }
 
-  // Restrict the categories to "Work", "Personal", and "Misc"
-  const allowedCategories = ['Work', 'Personal', 'Misc'];
   if (!allowedCategories.includes(taskData.category)) {
     throw new Error(`Invalid category. Must be one of: ${allowedCategories.join(', ')}`);
   }
@@ -45,8 +41,8 @@ const createTask = async (taskData) => {
   try {
     const newTask = {
       ...taskData,
-      user_id: userId, // Automatically set the user_id
-      completed: false, // Default to false
+      user_id: userId,
+      completed: false,
     };
 
     const response = await axios.post(`${API_URL}/todos`, newTask);
@@ -56,9 +52,17 @@ const createTask = async (taskData) => {
   }
 };
 
-// Update an existing task
+
 const updateTask = async (taskId, updatedTaskData) => {
   try {
+    if ('category' in updatedTaskData) {
+      
+      // Validate the category
+      if (!allowedCategories.includes(updatedTaskData.category)) {
+        throw new Error(`Invalid category. Must be one of: ${allowedCategories.join(', ')}`);
+      }
+    }
+
     const response = await axios.patch(`${API_URL}/todos/${taskId}`, updatedTaskData);
     return response.data;
   } catch (error) {
@@ -66,7 +70,6 @@ const updateTask = async (taskId, updatedTaskData) => {
   }
 };
 
-// Delete a task
 const deleteTask = async (taskId) => {
   try {
     const response = await axios.delete(`${API_URL}/todos/${taskId}`);

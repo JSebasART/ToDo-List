@@ -32,7 +32,7 @@
   import todoService from '../services/todoServices';
   
   export default {
-    emits: ['task-added'], // Emit event when task is added
+    emits: ['task-added'],
     setup(props, { emit }) {
       const newTask = ref({
         title: '',
@@ -47,20 +47,17 @@
             alert('Please fill in all required fields.');
             return;
           }
-  
-          // Send the new task to the service
+           
           await todoService.createTask({
             ...newTask.value,
-            completed: false, // Default to false
+            completed: false
           });
   
-          // Clear the form fields after submission
           newTask.value.title = '';
           newTask.value.category = '';
           newTask.value.date = '';
           newTask.value.description = '';
   
-          // Emit an event to notify the parent that a task was added
           emit('task-added');
         } catch (error) {
           console.error('Error adding task:', error.message);

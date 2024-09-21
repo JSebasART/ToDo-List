@@ -2,7 +2,6 @@
   <div class="tasks-container">
     <h2>My To-Do List</h2>
 
-    <!-- Filter by category and completion status -->
     <div class="filter-section">
       <label for="category">Category:</label>
       <select v-model="filter.category">
@@ -22,17 +21,13 @@
       <button @click="applyFilter">Apply Filter</button>
     </div>
 
-    <!-- Button to show/hide the new task form -->
     <button @click="toggleNewTaskForm">{{ showNewTaskForm ? 'Cancel' : 'New Task' }}</button>
 
-    <!-- New Task Form Component -->
     <NewTaskForm v-if="showNewTaskForm" @task-added="fetchTasksAndHideForm" />
 
-    <!-- Task list -->
     <div v-if="tasks.length === 0">No tasks found.</div>
     <ul v-else>
       <li v-for="task in tasks" :key="task.id" :class="{ completed: task.completed }">
-        <!-- Edit Mode -->
         <div v-if="editingTaskId === task.id">
           <form @submit.prevent="updateTask(task.id)">
             <div class="form-group">
@@ -52,7 +47,6 @@
           </form>
         </div>
 
-        <!-- View Mode -->
         <div v-else>
           <h3>{{ task.title }}</h3>
           <p>{{ task.description || 'No description' }}</p>
@@ -80,7 +74,7 @@ export default {
   setup() {
     const tasks = ref([]);
     const showNewTaskForm = ref(false);
-    const editingTaskId = ref(null); // Track the task being edited
+    const editingTaskId = ref(null);
     const taskEditData = ref({
       title: '',
       category: '',
@@ -158,15 +152,15 @@ export default {
           date: taskEditData.value.date,
           description: taskEditData.value.description,
         });
-        cancelEdit(); // Reset the form and stop editing
-        fetchTasks(); // Refresh the task list
+        cancelEdit();
+        fetchTasks();
       } catch (error) {
         console.error('Error updating task:', error.message);
       }
     };
 
     const applyFilter = () => {
-      fetchTasks(); // Re-fetch tasks based on selected filters
+      fetchTasks();
     };
 
     onMounted(fetchTasks);

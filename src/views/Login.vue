@@ -55,7 +55,7 @@
       };
 
       const redirectToRegister = () => {
-        router.push('/register'); // Navigate to the register page
+        router.push('/register');
       };
   
       return {
