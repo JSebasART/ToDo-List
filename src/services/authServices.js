@@ -22,14 +22,14 @@ const login = async (email, password) => {
   }
 };
 
-/* const register = async (userData) => {
+const register = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/users`, userData);
     return response.data;
   } catch (error) {
     throw new Error(`Registration failed: ${error.message}`);
   }
-}; */
+};
 
 const logout = () => {
   localStorage.removeItem('user');
@@ -37,6 +37,6 @@ const logout = () => {
 
 export default {
   login,
-  //register,
+  register,
   logout
 };

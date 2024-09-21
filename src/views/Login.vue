@@ -27,6 +27,8 @@
         </div>
         <button type="submit">Login</button>
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <button class="register" type="button" @click="redirectToRegister">Register</button>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
       </form>
     </div>
   </div>
@@ -46,16 +48,21 @@
       const errorMessage = computed(() => store.errorMessage);
       
       const login = async () => {
-      await store.login(email.value, password.value);
-      if (store.isAuthenticated) {
-        router.push('/dashboard');
-      }
-    };
+        await store.login(email.value, password.value);
+        if (store.isAuthenticated) {
+          router.push('/dashboard');
+        }
+      };
+
+      const redirectToRegister = () => {
+        router.push('/register'); // Navigate to the register page
+      };
   
       return {
         email,
         password,
         login,
+        redirectToRegister,
         errorMessage,
       };
     },
@@ -117,6 +124,11 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
+  .register{
+    background-color:lightblue;
+    margin-top: 2vh;
+  }
   
   button {
     width: 100%;
@@ -132,5 +144,6 @@
     color: red;
     margin-top: 10px;
   }
+
   </style>
   
