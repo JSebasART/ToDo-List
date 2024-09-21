@@ -1,45 +1,48 @@
 {
   "todos": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Buy groceries",
       "description": "",
       "completed": false,
       "user_id": 3,
-      "category": "Trabajo"
+      "category": "Trabajo",
+      "date": "2024-10-29"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Clean the house",
       "description": "",
-      "completed": true,
+      "completed": false,
       "user_id": 3,
-      "category": "Trabajo"
+      "category": "Trabajo",
+      "date": "2024-10-29"
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Finish project",
       "description": "",
       "completed": false,
       "user_id": 3,
-      "category": "Personal"
+      "category": "Personal",
+      "date": "2024-10-29"
     }
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John Doe",
       "email": "JohnDoe@gmail.com",
       "password": "Qwerty123."
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Jane Smith",
       "email": "JaneSmith@gmail.com",
       "password": "Qwerty123."
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Admin",
       "email": "admin@gmail.com",
       "password": "Qwerty123."
