@@ -1,14 +1,15 @@
 <template>
   <div class="tasks-container">
-    <h2>My To-Do List</h2>
-
+    <h2>Your To-Do List</h2>
+    <LogoutBtn />
+    
     <div class="filter-section">
       <label for="category">Category:</label>
       <select v-model="todoStore.filter.category">
         <option value="">All</option>
-        <option value="Work">Work</option>
+        <option value="Trabajo">Trabajo</option>
         <option value="Personal">Personal</option>
-        <option value="Misc">Misc</option>
+        <option value="Etc">Etc</option>
       </select>
 
       <label for="completed">Status:</label>
@@ -21,115 +22,123 @@
       <button @click="applyFilter">Apply Filter</button>
     </div>
 
-    <button @click="toggleNewTaskForm">{{ todoStore.showNewTaskForm ? 'Cancel' : 'New Task' }}</button>
+    <!-- Add New Task Button -->
+    <button v-if="!showTaskForm" @click="toggleTaskForm" class="add-task-button">Add New Task</button>
 
-    <NewTaskForm v-if="todoStore.showNewTaskForm" @task-added="fetchTasksAndHideForm" />
-
-    <div v-if="todoStore.tasks.length === 0">No tasks found.</div>
-    <ul v-else>
-      <li v-for="task in todoStore.tasks" :key="task.id" :class="{ completed: task.completed }">
-        <div v-if="editingTaskId === task.id">
-          <form @submit.prevent="updateTask(task.id)">
-            <div class="form-group">
-              <input type="text" v-model="taskEditData.title" placeholder="Task Title" required />
-            </div>
-            <div class="form-group">
-              <input type="text" v-model="taskEditData.category" placeholder="Category" required />
-            </div>
-            <div class="form-group">
-              <input type="date" v-model="taskEditData.date" placeholder="Date" required />
-            </div>
-            <div class="form-group">
-              <input type="text" v-model="taskEditData.description" placeholder="Description (optional)" />
-            </div>
-            <button type="submit">Save</button>
-            <button @click="cancelEdit">Cancel</button>
-          </form>
-        </div>
-
-        <div v-else>
-          <h3>{{ task.title }}</h3>
-          <p>{{ task.description || 'No description' }}</p>
-          <p>Category: {{ task.category }}</p>
-          <p>Date: {{ task.date }}</p>
-          <p>Status: {{ task.completed ? 'Completed' : 'Pending' }}</p>
-          <button @click="toggleComplete(task.id, task.completed)">Toggle Complete</button>
-          <button @click="startEdit(task)">Edit Task</button>
-          <button @click="deleteTask(task.id)">Delete Task</button>
-        </div>
-      </li>
+    <ul id="tasks">
+      <TaskItem
+        v-for="task in todoStore.tasks"
+        :key="task.id"
+        :task="task"
+        @toggle-complete="toggleComplete"
+        @delete-task="deleteTask"
+        @edit-task="editTask"
+      />
     </ul>
+
+    <div v-if="todoStore.tasks.length === 0">
+      <p>No tasks available</p>
+    </div>
+    
+    <!-- Form to add or edit tasks -->
+    <div v-if="showTaskForm">
+      <form @submit.prevent="saveTask">
+        <div>
+          <label for="title">Title:</label>
+          <input type="text" v-model="taskEditData.title" id="title" required />
+        </div>
+        <div>
+          <label for="category">Category:</label>
+          <select v-model="taskEditData.category" id="category" required>
+            <option value="Trabajo">Trabajo</option>
+            <option value="Personal">Personal</option>
+            <option value="Etc">Etc</option>
+          </select>
+        </div>
+        <div>
+          <label for="date">Date:</label>
+          <input type="date" v-model="taskEditData.date" id="date" required />
+        </div>
+        <div>
+          <label for="description">Description:</label>
+          <input type="text" v-model="taskEditData.description" id="description" />
+        </div>
+        <button type="submit">{{ taskEditData.id ? 'Update Task' : 'Add Task' }}</button>
+        <button type="button" @click="toggleTaskForm">Cancel</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { useTodoStore } from '../store/todoStore';
-import NewTaskForm from '../components/NewTaskForm.vue';
+import { ref, onMounted } from "vue";
+import TaskItem from "../components/TaskItem.vue";
+import { useTodoStore } from "../store/todoStore";
+import LogoutBtn from "../components/LogoutBtn.vue";
 
 export default {
   components: {
-    NewTaskForm,
+    TaskItem,
+    LogoutBtn,
   },
   setup() {
     const todoStore = useTodoStore();
-    const editingTaskId = ref(null);
     const taskEditData = ref({
-      title: '',
-      category: '',
-      date: '',
-      description: '',
+      id: null,
+      title: "",
+      category: "",
+      date: "",
+      description: "",
     });
+    const showTaskForm = ref(false);
 
     onMounted(() => {
       todoStore.fetchTasks();
     });
 
-    const fetchTasksAndHideForm = async () => {
-      await todoStore.fetchTasks();
-      todoStore.showNewTaskForm = false;
+    const saveTask = () => {
+      if (taskEditData.value.id) {
+        // If task ID exists, update the task
+        todoStore.updateTask(taskEditData.value.id, {
+          title: taskEditData.value.title,
+          category: taskEditData.value.category,
+          date: taskEditData.value.date,
+          description: taskEditData.value.description,
+        });
+      } else {
+        // Otherwise, add a new task
+        todoStore.createTask(taskEditData.value);
+      }
+      clearForm();
     };
 
-    const toggleNewTaskForm = () => {
-      todoStore.showNewTaskForm = !todoStore.showNewTaskForm;
-    };
-
-    const toggleComplete = async (taskId, currentStatus) => {
-      await todoStore.updateTask(taskId, { completed: !currentStatus });
-    };
-
-    const deleteTask = async (taskId) => {
-      await todoStore.deleteTask(taskId);
-    };
-
-    const startEdit = (task) => {
-      editingTaskId.value = task.id;
+    const clearForm = () => {
       taskEditData.value = {
-        title: task.title,
-        category: task.category,
-        date: task.date,
-        description: task.description || '',
+        id: null,
+        title: "",
+        category: "",
+        date: "",
+        description: "",
       };
+      showTaskForm.value = false; // Hide the form after saving
     };
 
-    const cancelEdit = () => {
-      editingTaskId.value = null;
-      taskEditData.value = {
-        title: '',
-        category: '',
-        date: '',
-        description: '',
-      };
+    const editTask = (task) => {
+      taskEditData.value = { ...task };
+      showTaskForm.value = true; // Show the form for editing
     };
 
-    const updateTask = async (taskId) => {
-      await todoStore.updateTask(taskId, {
-        title: taskEditData.value.title,
-        category: taskEditData.value.category,
-        date: taskEditData.value.date,
-        description: taskEditData.value.description,
-      });
-      cancelEdit();
+    const toggleTaskForm = () => {
+      showTaskForm.value = !showTaskForm.value;
+    };
+
+    const toggleComplete = (taskId) => {
+      const task = todoStore.tasks.find((task) => task.id === taskId);
+      todoStore.updateTask(taskId, { completed: !task.completed });
+    };
+
+    const deleteTask = (taskId) => {
+      todoStore.deleteTask(taskId);
     };
 
     const applyFilter = () => {
@@ -138,16 +147,14 @@ export default {
 
     return {
       todoStore,
-      toggleNewTaskForm,
-      fetchTasksAndHideForm,
+      taskEditData,
+      saveTask,
       toggleComplete,
       deleteTask,
-      startEdit,
-      updateTask,
-      cancelEdit,
-      editingTaskId,
-      taskEditData,
+      editTask,
       applyFilter,
+      showTaskForm,
+      toggleTaskForm,
     };
   },
 };
@@ -164,15 +171,8 @@ ul {
   padding: 0;
 }
 
-li {
+.filter-section {
   margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-}
-
-li.completed {
-  text-decoration: line-through;
 }
 
 button {
@@ -189,15 +189,12 @@ button:hover {
   background-color: #38a374;
 }
 
-.filter-section {
+.add-task-button {
+  background-color: #007bff;
   margin-bottom: 20px;
 }
 
-.filter-section select {
-  margin-right: 10px;
-}
-
-.filter-section button {
-  margin-left: 10px;
+.add-task-button:hover {
+  background-color: #0056b3;
 }
 </style>

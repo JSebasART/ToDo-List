@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore'; 
 
+
 const API_URL = 'http://localhost:3000'; 
 const allowedCategories = ['Trabajo', 'Personal', 'Etc'];
 
@@ -15,10 +16,9 @@ const getTasks = async (filter = {}) => {
       url += `&completed=${filter.completed}`;
     }
 
-    if (filter.category && ['Work', 'Personal', 'Misc'].includes(filter.category)) {
+    if (filter.category && ['Trabajo', 'Personal', 'Etc'].includes(filter.category)) {
       url += `&category=${filter.category}`;
     }
-
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
@@ -29,6 +29,7 @@ const getTasks = async (filter = {}) => {
 const createTask = async (taskData) => {
   const authStore = useAuthStore();
   const userId = authStore.user.id;
+  taskData.id = (Math.floor(Math.random() * (50000 - 1 + 1)) + 1).toString();
 
   if (!taskData.title) {
     throw new Error('Task title is required');

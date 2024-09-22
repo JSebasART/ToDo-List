@@ -1,40 +1,22 @@
 {
   "todos": [
     {
-      "id": "1",
-      "title": "Buy groceries",
-      "description": "we need to buy onionss",
-      "completed": true,
-      "user_id": 3,
-      "category": "Trabajo",
-      "date": "2024-10-29"
-    },
-    {
-      "id": "2",
-      "title": "Clean the house",
-      "description": "",
-      "completed": true,
-      "user_id": 3,
-      "category": "Trabajo",
-      "date": "2024-10-29"
-    },
-    {
-      "id": "3",
-      "title": "Finish project",
-      "description": "",
-      "completed": false,
-      "user_id": 3,
+      "id": "34559",
+      "title": "Go for groceries",
       "category": "Personal",
-      "date": "2024-10-29"
+      "date": "2024-09-23",
+      "description": "I need to buy sun dried tomatoes",
+      "user_id": "3",
+      "completed": false
     },
     {
-      "id": "6183",
-      "title": "Finish auth",
-      "category": "Work",
-      "date": "2024-09-03",
-      "description": "asdasd",
-      "completed": true,
-      "user_id": "3"
+      "id": "4885",
+      "title": "Compute",
+      "category": "Trabajo",
+      "date": "2024-09-25",
+      "description": "0010011",
+      "user_id": "3",
+      "completed": false
     }
   ],
   "users": [
@@ -55,6 +37,12 @@
       "name": "Admin",
       "email": "admin@gmail.com",
       "password": "Qwerty123."
+    },
+    {
+      "id": "48fc",
+      "name": "sebastian Jimenez",
+      "email": "admin@gmail.com",
+      "password": "Qwerty123$"
     }
   ]
 }

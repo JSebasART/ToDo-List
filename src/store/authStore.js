@@ -4,8 +4,8 @@ import authService from '../services/authServices';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null,
-    Authenticated: false,
+    user: JSON.parse(sessionStorage.getItem('user')) || null,
+    isAuthenticated: !!sessionStorage.getItem('user'),
     errorMessage: '',
   }),
 
