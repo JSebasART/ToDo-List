@@ -45,7 +45,6 @@ export default {
     const errorMessage = computed(() => store.errorMessage);
 
     const validatePassword = (password) => {
-      // Ensure password has at least 8 characters, 1 uppercase letter, 1 special character
       const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
       return regex.test(password);
     };

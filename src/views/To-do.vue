@@ -22,7 +22,6 @@
       <button @click="applyFilter">Apply Filter</button>
     </div>
 
-    <!-- Add New Task Button -->
     <button v-if="!showTaskForm" @click="toggleTaskForm" class="add-task-button">Add New Task</button>
 
     <ul id="tasks">
@@ -40,7 +39,6 @@
       <p>No tasks available</p>
     </div>
     
-    <!-- Form to add or edit tasks -->
     <div v-if="showTaskForm">
       <form @submit.prevent="saveTask">
         <div>
@@ -98,7 +96,6 @@ export default {
 
     const saveTask = () => {
       if (taskEditData.value.id) {
-        // If task ID exists, update the task
         todoStore.updateTask(taskEditData.value.id, {
           title: taskEditData.value.title,
           category: taskEditData.value.category,
@@ -106,7 +103,6 @@ export default {
           description: taskEditData.value.description,
         });
       } else {
-        // Otherwise, add a new task
         todoStore.createTask(taskEditData.value);
       }
       clearForm();
@@ -120,12 +116,12 @@ export default {
         date: "",
         description: "",
       };
-      showTaskForm.value = false; // Hide the form after saving
+      showTaskForm.value = false;
     };
 
     const editTask = (task) => {
       taskEditData.value = { ...task };
-      showTaskForm.value = true; // Show the form for editing
+      showTaskForm.value = true;
     };
 
     const toggleTaskForm = () => {

@@ -10,7 +10,7 @@
       <button @click="$emit('toggle-complete', task.id)">
         {{ task.completed ? 'Undo' : 'Complete' }}
       </button>
-      <button @click="$emit('edit-task', task)">Edit</button> <!-- Edit Button -->
+      <button @click="$emit('edit-task', task)">Edit</button>
       <button @click="$emit('delete-task', task.id)">Delete</button>
     </div>
   </li>
