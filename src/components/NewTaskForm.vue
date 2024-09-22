@@ -1,91 +1,77 @@
 <template>
-    <div class="new-task-form">
-      <h3>Add New Task</h3>
-      <form @submit.prevent="addTask">
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" v-model="newTask.title" id="title" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="category">Category</label>
-          <input type="text" v-model="newTask.category" id="category" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="date">Date</label>
-          <input type="date" v-model="newTask.date" id="date" required />
-        </div>
-  
-        <div class="form-group">
-          <label for="description">Description (optional)</label>
-          <input type="text" v-model="newTask.description" id="description" />
-        </div>
-  
-        <button type="submit">Add Task</button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  import { ref} from 'vue';
-  import todoService from '../services/todoServices';
-  
-  export default {
-    emits: ['task-added'],
-    setup(props, { emit }) {
-      const newTask = ref({
-        title: '',
-        category: '',
-        date: '',
-        description: '',
-      });
-  
-      const addTask = async () => {
-        try {
-          if (!newTask.value.title || !newTask.value.category || !newTask.value.date) {
-            alert('Please fill in all required fields.');
-            return;
-          }
-           
-          await todoService.createTask({
-            ...newTask.value,
-            completed: false
-          });
-  
-          newTask.value.title = '';
-          newTask.value.category = '';
-          newTask.value.date = '';
-          newTask.value.description = '';
-  
-          emit('task-added');
-        } catch (error) {
-          console.error('Error adding task:', error.message);
-        }
-      };
-  
-      return {
-        newTask,
-        addTask,
-      };
+  <div class="mt-6">
+    <form @submit.prevent="submitTask" class="space-y-6">
+      <div class="flex flex-col">
+        <label for="title" class="font-semibold mb-2">Title:</label>
+        <input
+          type="text"
+          v-model="taskData.title"
+          id="title"
+          required
+          class="border border-gray-300 rounded-lg p-2"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="category" class="font-semibold mb-2">Category:</label>
+        <select v-model="taskData.category" id="category" required class="border border-gray-300 rounded-lg p-2">
+          <option value="Trabajo">Trabajo</option>
+          <option value="Personal">Personal</option>
+          <option value="Etc">Etc</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col">
+        <label for="date" class="font-semibold mb-2">Date:</label>
+        <input
+          type="date"
+          v-model="taskData.date"
+          id="date"
+          required
+          class="border border-gray-300 rounded-lg p-2"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="description" class="font-semibold mb-2">Description:</label>
+        <input
+          type="text"
+          v-model="taskData.description"
+          id="description"
+          class="border border-gray-300 rounded-lg p-2"
+        />
+      </div>
+
+      <div class="flex space-x-4">
+        <button
+          type="submit"
+          class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg"
+        >
+          {{ taskData.id ? 'Update Task' : 'Add Task' }}
+        </button>
+        <button type="button" @click="cancelTask" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    taskData: {
+      type: Object,
+      required: true,
     },
-  };
-  </script>
-  
-  <style scoped>
-  .new-task-form {
-    margin-bottom: 30px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  </style>
-  
+  },
+  methods: {
+    submitTask() {
+      this.$emit('submit-task');
+    },
+    cancelTask() {
+      this.$emit('cancel-task');
+    },
+  },
+};
+</script>

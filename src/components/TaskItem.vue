@@ -1,17 +1,33 @@
 <template>
-  <li :class="{ completed: task.completed }">
-    <div class="task-details">
-      <h3>{{ task.title }}</h3>
-      <p>{{ task.description }}</p>
-      <p>Category: {{ task.category }}</p>
-      <p>Date: {{ task.date }}</p>
+  <li :class="['flex justify-between items-center p-4 mb-4 rounded-lg', task.completed ? 'bg-gray-200 line-through' : 'bg-gray-100']">
+    <!-- Task Details -->
+    <div class="flex-grow">
+      <h3 class="font-semibold text-lg">{{ task.title }}</h3>
+      <p class="text-gray-600">{{ task.description }}</p>
+      <p class="text-sm text-gray-500">Category: {{ task.category }}</p>
+      <p class="text-sm text-gray-500">Date: {{ task.date }}</p>
     </div>
-    <div class="task-actions">
-      <button @click="$emit('toggle-complete', task.id)">
+
+    <!-- Task Actions -->
+    <div class="flex space-x-2">
+      <button
+        @click="$emit('toggle-complete', task.id)"
+        class="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition"
+      >
         {{ task.completed ? 'Undo' : 'Complete' }}
       </button>
-      <button @click="$emit('edit-task', task)">Edit</button>
-      <button @click="$emit('delete-task', task.id)">Delete</button>
+      <button
+        @click="$emit('edit-task', task)"
+        class="bg-yellow-500 text-white py-1 px-3 rounded-lg hover:bg-yellow-600 transition"
+      >
+        Edit
+      </button>
+      <button
+        @click="$emit('delete-task', task.id)"
+        class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition"
+      >
+        Delete
+      </button>
     </div>
   </li>
 </template>
@@ -23,40 +39,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-li {
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-li.completed {
-  text-decoration: line-through;
-}
-
-button {
-  background-color: #42b983;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #38a374;
-}
-
-.task-details {
-  flex-grow: 1;
-}
-
-.task-actions {
-  flex-shrink: 0;
-}
-</style>
