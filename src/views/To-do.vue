@@ -4,7 +4,7 @@
 
     <div class="filter-section">
       <label for="category">Category:</label>
-      <select v-model="filter.category">
+      <select v-model="todoStore.filter.category">
         <option value="">All</option>
         <option value="Work">Work</option>
         <option value="Personal">Personal</option>
@@ -12,7 +12,7 @@
       </select>
 
       <label for="completed">Status:</label>
-      <select v-model="filter.completed">
+      <select v-model="todoStore.filter.completed">
         <option value="">All</option>
         <option :value="true">Completed</option>
         <option :value="false">Pending</option>
@@ -21,13 +21,13 @@
       <button @click="applyFilter">Apply Filter</button>
     </div>
 
-    <button @click="toggleNewTaskForm">{{ showNewTaskForm ? 'Cancel' : 'New Task' }}</button>
+    <button @click="toggleNewTaskForm">{{ todoStore.showNewTaskForm ? 'Cancel' : 'New Task' }}</button>
 
-    <NewTaskForm v-if="showNewTaskForm" @task-added="fetchTasksAndHideForm" />
+    <NewTaskForm v-if="todoStore.showNewTaskForm" @task-added="fetchTasksAndHideForm" />
 
-    <div v-if="tasks.length === 0">No tasks found.</div>
+    <div v-if="todoStore.tasks.length === 0">No tasks found.</div>
     <ul v-else>
-      <li v-for="task in tasks" :key="task.id" :class="{ completed: task.completed }">
+      <li v-for="task in todoStore.tasks" :key="task.id" :class="{ completed: task.completed }">
         <div v-if="editingTaskId === task.id">
           <form @submit.prevent="updateTask(task.id)">
             <div class="form-group">
@@ -64,7 +64,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import todoService from '../services/todoServices';
+import { useTodoStore } from '../store/todoStore';
 import NewTaskForm from '../components/NewTaskForm.vue';
 
 export default {
@@ -72,8 +72,7 @@ export default {
     NewTaskForm,
   },
   setup() {
-    const tasks = ref([]);
-    const showNewTaskForm = ref(false);
+    const todoStore = useTodoStore();
     const editingTaskId = ref(null);
     const taskEditData = ref({
       title: '',
@@ -81,44 +80,27 @@ export default {
       date: '',
       description: '',
     });
-    const filter = ref({
-      category: '',
-      completed: '',
+
+    // Fetch tasks from the store on component mount
+    onMounted(() => {
+      todoStore.fetchTasks();
     });
 
-    const fetchTasks = async () => {
-      try {
-        tasks.value = await todoService.getTasks(filter.value);
-      } catch (error) {
-        console.error('Error fetching tasks:', error.message);
-      }
-    };
-
     const fetchTasksAndHideForm = async () => {
-      await fetchTasks();
-      showNewTaskForm.value = false;
+      await todoStore.fetchTasks();
+      todoStore.showNewTaskForm = false;
     };
 
     const toggleNewTaskForm = () => {
-      showNewTaskForm.value = !showNewTaskForm.value;
+      todoStore.showNewTaskForm = !todoStore.showNewTaskForm;
     };
 
     const toggleComplete = async (taskId, currentStatus) => {
-      try {
-        await todoService.updateTask(taskId, { completed: !currentStatus });
-        fetchTasks();
-      } catch (error) {
-        console.error('Error updating task:', error.message);
-      }
+      await todoStore.updateTask(taskId, { completed: !currentStatus });
     };
 
     const deleteTask = async (taskId) => {
-      try {
-        await todoService.deleteTask(taskId);
-        fetchTasks();
-      } catch (error) {
-        console.error('Error deleting task:', error.message);
-      }
+      await todoStore.deleteTask(taskId);
     };
 
     // Start editing a task
@@ -145,29 +127,21 @@ export default {
 
     // Update the task
     const updateTask = async (taskId) => {
-      try {
-        await todoService.updateTask(taskId, {
-          title: taskEditData.value.title,
-          category: taskEditData.value.category,
-          date: taskEditData.value.date,
-          description: taskEditData.value.description,
-        });
-        cancelEdit();
-        fetchTasks();
-      } catch (error) {
-        console.error('Error updating task:', error.message);
-      }
+      await todoStore.updateTask(taskId, {
+        title: taskEditData.value.title,
+        category: taskEditData.value.category,
+        date: taskEditData.value.date,
+        description: taskEditData.value.description,
+      });
+      cancelEdit();
     };
 
     const applyFilter = () => {
-      fetchTasks();
+      todoStore.applyFilter(todoStore.filter);
     };
 
-    onMounted(fetchTasks);
-
     return {
-      tasks,
-      showNewTaskForm,
+      todoStore,
       toggleNewTaskForm,
       fetchTasksAndHideForm,
       toggleComplete,
@@ -175,10 +149,9 @@ export default {
       startEdit,
       updateTask,
       cancelEdit,
-      filter,
-      applyFilter,
       editingTaskId,
       taskEditData,
+      applyFilter,
     };
   },
 };
