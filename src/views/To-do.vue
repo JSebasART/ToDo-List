@@ -1,68 +1,114 @@
 <template>
-  <div class="tasks-container">
-    <h2>Your To-Do List</h2>
-    <LogoutBtn />
-    
-    <div class="filter-section">
-      <label for="category">Category:</label>
-      <select v-model="todoStore.filter.category">
-        <option value="">All</option>
-        <option value="Trabajo">Trabajo</option>
-        <option value="Personal">Personal</option>
-        <option value="Etc">Etc</option>
-      </select>
-
-      <label for="completed">Status:</label>
-      <select v-model="todoStore.filter.completed">
-        <option value="">All</option>
-        <option :value="true">Completed</option>
-        <option :value="false">Pending</option>
-      </select>
-
-      <button @click="applyFilter">Apply Filter</button>
+  <div class="max-w-3xl mx-auto py-8 px-4 relative">
+    <!-- Header with centered heading and Logout Button -->
+    <div class="relative mb-8">
+      <h2 class="text-3xl font-bold text-center">Your To-Do List</h2>
+      <LogoutBtn class="absolute top-0 right-0" />
     </div>
 
-    <button v-if="!showTaskForm" @click="toggleTaskForm" class="add-task-button">Add New Task</button>
+    <!-- Filter Section -->
+    <div class="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0 md:space-x-6">
+      <div class="flex items-center space-x-2">
+        <label for="category" class="font-semibold">Category:</label>
+        <select v-model="todoStore.filter.category" class="border border-gray-300 rounded-lg p-2">
+          <option value="">All</option>
+          <option value="Trabajo">Trabajo</option>
+          <option value="Personal">Personal</option>
+          <option value="Etc">Etc</option>
+        </select>
+      </div>
 
-    <ul id="tasks">
-      <TaskItem
-        v-for="task in todoStore.tasks"
-        :key="task.id"
-        :task="task"
-        @toggle-complete="toggleComplete"
-        @delete-task="deleteTask"
-        @edit-task="editTask"
-      />
-    </ul>
+      <div class="flex items-center space-x-2">
+        <label for="completed" class="font-semibold">Status:</label>
+        <select v-model="todoStore.filter.completed" class="border border-gray-300 rounded-lg p-2">
+          <option value="">All</option>
+          <option :value="true">Completed</option>
+          <option :value="false">Pending</option>
+        </select>
+      </div>
 
-    <div v-if="todoStore.tasks.length === 0">
+      <button @click="applyFilter" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg">
+        Apply Filter
+      </button>
+    </div>
+
+    <!-- Add New Task Button -->
+    <button
+      v-if="!showTaskForm"
+      @click="toggleTaskForm"
+      class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 mb-6 rounded-lg mx-auto block"
+    >
+      Add New Task
+    </button>
+
+    <!-- Tasks Table Component -->
+    <TaskTable
+      :tasks="todoStore.tasks"
+      :toggleComplete="toggleComplete"
+      :editTask="editTask"
+      :deleteTask="deleteTask"
+    />
+
+    <!-- No Tasks Available -->
+    <div v-if="todoStore.tasks.length === 0" class="text-center mt-8 text-gray-500">
       <p>No tasks available</p>
     </div>
-    
-    <div v-if="showTaskForm">
-      <form @submit.prevent="saveTask">
-        <div>
-          <label for="title">Title:</label>
-          <input type="text" v-model="taskEditData.title" id="title" required />
+
+    <!-- Task Form -->
+    <div v-if="showTaskForm" class="mt-6">
+      <form @submit.prevent="saveTask" class="space-y-6">
+        <div class="flex flex-col">
+          <label for="title" class="font-semibold mb-2">Title:</label>
+          <input
+            type="text"
+            v-model="taskEditData.title"
+            id="title"
+            required
+            class="border border-gray-300 rounded-lg p-2"
+          />
         </div>
-        <div>
-          <label for="category">Category:</label>
-          <select v-model="taskEditData.category" id="category" required>
+
+        <div class="flex flex-col">
+          <label for="category" class="font-semibold mb-2">Category:</label>
+          <select v-model="taskEditData.category" id="category" required class="border border-gray-300 rounded-lg p-2">
             <option value="Trabajo">Trabajo</option>
             <option value="Personal">Personal</option>
             <option value="Etc">Etc</option>
           </select>
         </div>
-        <div>
-          <label for="date">Date:</label>
-          <input type="date" v-model="taskEditData.date" id="date" required />
+
+        <div class="flex flex-col">
+          <label for="date" class="font-semibold mb-2">Date:</label>
+          <input
+            type="date"
+            v-model="taskEditData.date"
+            id="date"
+            required
+            class="border border-gray-300 rounded-lg p-2"
+          />
         </div>
-        <div>
-          <label for="description">Description:</label>
-          <input type="text" v-model="taskEditData.description" id="description" />
+
+        <div class="flex flex-col">
+          <label for="description" class="font-semibold mb-2">Description:</label>
+          <input
+            type="text"
+            v-model="taskEditData.description"
+            id="description"
+            class="border border-gray-300 rounded-lg p-2"
+          />
         </div>
-        <button type="submit">{{ taskEditData.id ? 'Update Task' : 'Add Task' }}</button>
-        <button type="button" @click="toggleTaskForm">Cancel</button>
+
+        <div class="flex space-x-4">
+          <button
+            type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg"
+          >
+            {{ taskEditData.id ? 'Update Task' : 'Add Task' }}
+          </button>
+          <button type="button" @click="toggleTaskForm" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -70,13 +116,13 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import TaskItem from "../components/TaskItem.vue";
-import { useTodoStore } from "../store/todoStore";
+import TaskTable from "../components/TaskTable.vue"; // Importing TaskTable component
 import LogoutBtn from "../components/LogoutBtn.vue";
+import { useTodoStore } from "../store/todoStore";
 
 export default {
   components: {
-    TaskItem,
+    TaskTable,
     LogoutBtn,
   },
   setup() {
@@ -155,42 +201,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.tasks-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.filter-section {
-  margin-bottom: 20px;
-}
-
-button {
-  margin-right: 10px;
-  background-color: #42b983;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #38a374;
-}
-
-.add-task-button {
-  background-color: #007bff;
-  margin-bottom: 20px;
-}
-
-.add-task-button:hover {
-  background-color: #0056b3;
-}
-</style>

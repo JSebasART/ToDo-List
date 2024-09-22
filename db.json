@@ -1,20 +1,20 @@
 {
   "todos": [
     {
-      "id": "34559",
-      "title": "Go for groceries",
-      "category": "Personal",
-      "date": "2024-09-23",
-      "description": "I need to buy sun dried tomatoes",
-      "user_id": "3",
-      "completed": false
-    },
-    {
       "id": "4885",
-      "title": "Compute",
+      "title": "Computes",
       "category": "Trabajo",
       "date": "2024-09-25",
       "description": "0010011",
+      "user_id": "3",
+      "completed": true
+    },
+    {
+      "id": "6734",
+      "title": "Groceries",
+      "category": "Etc",
+      "date": "2024-09-03",
+      "description": "0010011s",
       "user_id": "3",
       "completed": false
     }
