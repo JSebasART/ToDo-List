@@ -26,6 +26,60 @@
       "description": "asdasd",
       "user_id": "3",
       "completed": false
+    },
+    {
+      "id": "20962",
+      "title": "Computes",
+      "category": "Trabajo",
+      "date": "2024-09-24",
+      "description": "",
+      "user_id": "3",
+      "completed": false
+    },
+    {
+      "id": "4886",
+      "title": "Computes",
+      "category": "Trabajo",
+      "date": "2024-09-25",
+      "description": "0010011",
+      "user_id": "3",
+      "completed": true
+    },
+    {
+      "id": "4887",
+      "title": "Computes",
+      "category": "Trabajo",
+      "date": "2024-09-25",
+      "description": "0010011",
+      "user_id": "3",
+      "completed": true
+    },
+    {
+      "id": "4888",
+      "title": "Computes",
+      "category": "Trabajo",
+      "date": "2024-09-25",
+      "description": "0010011",
+      "user_id": "3",
+      "completed": true
+    },
+    {
+      "id": "4889",
+      "title": "Computes",
+      "category": "Trabajo",
+      "date": "2024-09-25",
+      "description": "0010011",
+      "user_id": "3",
+      "completed": false
+    },
+    {
+      "id": "4890",
+      "title": "Computes",
+      "category": "Trabajo",
+      "date": "2024-09-25",
+      "description": "0010011",
+      "user_id": "3",
+      "completed": false
     }
   ],
   "users": [
