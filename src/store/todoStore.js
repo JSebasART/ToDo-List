@@ -30,7 +30,7 @@ export const useTodoStore = defineStore('todo', {
       this.error = null;
       try {
         const newTask = await todoService.createTask(taskData);
-        this.tasks.push(newTask);  // Optimistically add the task
+        this.tasks.push(newTask);
       } catch (error) {
         this.error = error.message;
       } finally {
@@ -69,7 +69,7 @@ export const useTodoStore = defineStore('todo', {
 
     applyFilter(newFilter) {
       this.filter = { ...this.filter, ...newFilter };
-      this.fetchTasks();  // Refetch the tasks based on the new filter
+      this.fetchTasks();
     },
   },
 });

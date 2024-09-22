@@ -56,8 +56,6 @@ const createTask = async (taskData) => {
 const updateTask = async (taskId, updatedTaskData) => {
   try {
     if ('category' in updatedTaskData) {
-      
-      // Validate the category
       if (!allowedCategories.includes(updatedTaskData.category)) {
         throw new Error(`Invalid category. Must be one of: ${allowedCategories.join(', ')}`);
       }

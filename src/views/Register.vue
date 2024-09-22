@@ -26,30 +26,30 @@
   <script>
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
-  import { useRegisterStore } from '../store/registerStore'; // Import the Pinia store
+  import { useRegisterStore } from '../store/registerStore';
   
   export default {
     setup() {
       const name = ref('');
       const email = ref('');
       const password = ref('');
-      const store = useRegisterStore(); // Use the store
+      const store = useRegisterStore();
       const router = useRouter();
   
-      const errorMessage = computed(() => store.errorMessage); // Reactive error message
+      const errorMessage = computed(() => store.errorMessage);
   
       const registerUser = async () => {
         await store.register({ name: name.value, email: email.value, password: password.value });
   
         if (store.isRegistered) {
-          router.push('/login'); // Navigate to login page after successful registration
+          router.push('/login');
         }
       };
       
       const handleRedirect = async () => {
       await registerUser();
       if (store.isRegistered) {
-        router.push('/'); // Navigate to the login page
+        router.push('/');
       }
     };
   
@@ -59,7 +59,7 @@
         password,
         registerUser,
         handleRedirect,
-        errorMessage, // Display any registration errors
+        errorMessage,
       };
     },
   };

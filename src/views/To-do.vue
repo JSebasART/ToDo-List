@@ -81,7 +81,6 @@ export default {
       description: '',
     });
 
-    // Fetch tasks from the store on component mount
     onMounted(() => {
       todoStore.fetchTasks();
     });
@@ -103,7 +102,6 @@ export default {
       await todoStore.deleteTask(taskId);
     };
 
-    // Start editing a task
     const startEdit = (task) => {
       editingTaskId.value = task.id;
       taskEditData.value = {
@@ -114,7 +112,6 @@ export default {
       };
     };
 
-    // Cancel the editing
     const cancelEdit = () => {
       editingTaskId.value = null;
       taskEditData.value = {
@@ -125,7 +122,6 @@ export default {
       };
     };
 
-    // Update the task
     const updateTask = async (taskId) => {
       await todoStore.updateTask(taskId, {
         title: taskEditData.value.title,
