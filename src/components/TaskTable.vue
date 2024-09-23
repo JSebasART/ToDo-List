@@ -5,10 +5,10 @@
         <tr class="bg-cblack text-white">
           <th class="px-4 py-3">Complete</th>
           <th class="px-4 py-3">Task</th>
-          <th class="px-4 py-3">Description</th>
-          <th class="px-4 py-3">Category</th>
+          <th class="px-4 py-3 ">Description</th>
+          <th class="px-4 py-3 ">Category</th>
           <th class="px-4 py-3">Date</th>
-          <th class="px-4 py-3">Actions</th>
+          <th class="px-4 py-3 text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,6 @@
           }"
           class="border-t border-cblack transition-all duration-200 ease-in-out"
         >
-          <!-- Task Complete Checkbox -->
           <td class="px-4 py-3 text-center">
             <input
               type="checkbox"
@@ -30,22 +29,11 @@
               class="form-checkbox h-5 w-5 text-corange focus:ring-corange cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
             />
           </td>
-
-          <!-- Task Title -->
           <td class="px-4 py-3">{{ task.title }}</td>
-
-          <!-- Task Description -->
           <td class="px-4 py-3">{{ task.description }}</td>
-
-          <!-- Task Category -->
           <td class="px-4 py-3">{{ task.category }}</td>
-
-          <!-- Task Date -->
           <td class="px-4 py-3">{{ task.date }}</td>
-
-          <!-- Task Actions (Edit and Delete Buttons) -->
-          <td class="px-4 py-3 flex items-center space-x-2">
-            <!-- Edit Task Button (Pen Icon) -->
+          <td class="px-4 py-3 flex justify-center space-x-2">
             <button
               class="edit-button p-2 text-corange hover:text-opacity-80 rounded-lg transition-transform duration-200 ease-in-out hover:scale-110"
               @click="editTask(task)"
@@ -55,8 +43,6 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 4h2m4.418 2.418l1.664-1.664a1.5 1.5 0 112.121 2.121l-1.664 1.664-6.05 6.05a2.5 2.5 0 01-1.415.586l-4 1a1 1 0 01-1.257-1.257l1-4a2.5 2.5 0 01.586-1.415l6.05-6.05z" />
               </svg>
             </button>
-
-            <!-- Delete Task Button (Red Cross Icon) -->
             <button
               class="delete-button p-2 text-red-500 hover:text-red-700 rounded-lg transition-transform duration-200 ease-in-out hover:scale-110"
               @click="deleteTask(task.id)"
@@ -70,6 +56,9 @@
         </tr>
       </tbody>
     </table>
+    <div v-if="tasks.length === 0" class="text-center py-4 text-gray-500">
+      No tasks available
+    </div>
   </div>
 </template>
 

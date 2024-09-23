@@ -3,10 +3,10 @@
     <div class="max-w-md mx-auto mt-12 p-8 bg-cwhite-dark shadow-lg rounded-lg relative">
       <div class="relative mb-6">
         <button
-          class="absolute left-0 px-4 py-2 bg-cblack text-white text-sm font-semibold rounded-lg hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-cblack flex items-center space-x-2"
+          class="absolute left-0 px-4 py-2 sm:px-2 sm:py-1 bg-cblack text-white text-sm sm:text-xs font-semibold rounded-lg hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-cblack flex items-center space-x-2"
           @click="goToLogin"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
@@ -68,9 +68,7 @@
         <p v-if="errorMessage" class="text-red-500 text-sm mt-4">{{ errorMessage }}</p>
       </form>
     </div>
-
-    <!-- Footer -->
-    <footerc class="mt-auto" />
+    <Footerc class="mt-auto" />
   </div>
 </template>
 
@@ -78,11 +76,11 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRegisterStore } from '../store/registerStore';
-import footerc from '../components/footer.vue';
+import Footerc from '../components/Footer.vue';
 
 export default {
   components: {
-    footerc,
+    Footerc,
   },
   setup() {
     const name = ref('');
@@ -148,25 +146,3 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Using your custom color scheme */
-.bg-cwhite {
-  background-color: #FAF7F0;
-}
-
-.bg-cwhite-dark {
-  background-color: #D8D2C2;
-}
-
-.text-cblack {
-  color: #4A4947;
-}
-
-.bg-corange {
-  background-color: #B17457;
-}
-
-button:focus {
-  box-shadow: 0 0 0 2px rgba(177, 116, 87, 0.5);
-}
-</style>

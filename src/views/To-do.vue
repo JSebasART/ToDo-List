@@ -1,16 +1,12 @@
 <template>
-  <!-- Flex container for the entire page -->
   <div class="flex flex-col min-h-screen bg-cwhite">
-    <!-- Main content (Task List) -->
-    <div class="flex-grow max-w-7xl mx-auto py-8 px-4">
-      <!-- Title and Logout button -->
-      <div class="relative mb-8 flex justify-between items-center flex-wrap">
+    <div class="flex-grow max-w-7xl w-full mx-auto py-8 px-4 sm:px-4 md:px-8 lg:px-12">
+      <div class="relative mb-8 flex flex-col md:flex-row justify-between items-center flex-wrap">
         <h2 class="text-4xl font-bold text-center w-full md:w-auto text-cblack">Your To-Do List</h2>
         <LogoutBtn class="mt-4 md:mt-0 md:ml-auto" />
       </div>
 
-      <!-- Filters Section -->
-      <div class="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0 md:space-x-6 bg-cwhite-dark p-4 rounded-lg shadow-md">
+      <div class="flex items-center justify-between mb-8 space-x-4 bg-cwhite-dark p-4 rounded-lg shadow-md w-full">
         <div class="flex items-center space-x-2">
           <label for="category" class="font-semibold text-cblack">Category:</label>
           <select v-model="todoStore.filter.category" @change="applyFilters" class="border border-cblack rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-corange">
@@ -31,7 +27,6 @@
         </div>
       </div>
 
-      <!-- Add New Task Button -->
       <button
         v-if="!showTaskForm"
         @click="toggleTaskForm"
@@ -40,7 +35,6 @@
         Add New Task
       </button>
 
-      <!-- New Task Form -->
       <NewTaskForm
         v-if="showTaskForm"
         :taskData="taskEditData"
@@ -48,7 +42,6 @@
         @cancel-task="toggleTaskForm"
       />
 
-      <!-- Task Table -->
       <div class="overflow-x-auto bg-cwhite-dark p-4 rounded-lg shadow-lg">
         <TaskTable
           :tasks="todoStore.tasks"
@@ -58,14 +51,12 @@
         />
       </div>
 
-      <!-- No Tasks Message -->
       <div v-if="todoStore.tasks.length === 0" class="text-center mt-8 text-cblack">
         <p>No tasks available</p>
       </div>
     </div>
 
-    <!-- Footer, always at the bottom -->
-    <Footer/>
+    <Footerc/>
   </div>
 </template>
 
@@ -74,7 +65,7 @@ import { ref, onMounted, watch } from "vue";
 import TaskTable from "../components/TaskTable.vue";
 import NewTaskForm from "../components/NewTaskForm.vue"; 
 import LogoutBtn from "../components/LogoutBtn.vue";
-import Footer from "../components/Footer.vue"; // Importing Footer component
+import Footerc from "../components/Footer.vue";
 import { useTodoStore } from "../store/todoStore";
 
 export default {
@@ -82,7 +73,7 @@ export default {
     TaskTable,
     NewTaskForm,
     LogoutBtn,
-    Footer, // Registering Footer component
+    Footerc, 
   },
   setup() {
     const todoStore = useTodoStore();

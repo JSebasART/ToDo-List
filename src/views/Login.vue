@@ -1,8 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col bg-cwhite">
-    <!-- Main content -->
-    <div class="flex flex-col md:flex-row justify-between max-w-5xl mx-auto mt-12 mb-8 p-8 shadow-lg bg-cwhite-dark rounded-lg">
-      <!-- Information about the app -->
+    <div class="flex flex-col md:flex-row justify-between max-w-5xl mx-4 md:mx-auto mt-12 mb-8 p-8 shadow-lg bg-cwhite-dark rounded-lg">
       <div class="flex-1 pr-6">
         <h2 class="text-2xl font-bold mb-4 text-center text-cblack">Welcome to the To-Do List App</h2>
         <p class="mb-4 text-cblack">A well-organized to-do list is an essential tool for productivity. It helps you:</p>
@@ -16,7 +14,6 @@
           Our app is designed to simplify your life by offering a clean, intuitive interface to manage your tasks. Simply log in and start organizing your day!
         </p>
       </div>
-      <!-- Login form -->
       <div class="flex-1 border-t md:border-l md:border-t-0 border-cblack pt-6 md:pt-0 md:pl-6">
         <h2 class="text-2xl font-bold mb-4 text-center text-cblack">Login</h2>
         <form @submit.prevent="login" class="space-y-4">
@@ -36,9 +33,7 @@
         </form>
       </div>
     </div>
-
-    <!-- Footer -->
-    <footerc class="mt-auto" />
+    <Footerc class="mt-auto" />
   </div>
 </template>
 
@@ -46,11 +41,11 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../store/authStore';
-import footerc from '../components/footer.vue';
+import Footerc from '../components/Footer.vue';
 
 export default {
   components: {
-    footerc,
+    Footerc,
   },
   setup() {
     const email = ref('');
