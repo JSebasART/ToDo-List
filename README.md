@@ -49,7 +49,7 @@ Once the dependencies are installed, you can start the development server:
 npm run dev
 ```
 
-This will start the Vite development server, and the project will be available at \`http://localhost:5173/\` by default. The \`--host\` flag allows access from other devices in the network.
+This will start the Vite development server, and the project will be available at `http://localhost:5173/` by default. The \`--host\` flag allows access from other devices in the network.
 
 ### Mock API Setup
 
@@ -79,7 +79,7 @@ After building the project, you can preview the production build locally using V
 npm run preview
 ```
 
-The preview server will be available at \`http://localhost:4173/\`.
+The preview server will be available at `http://localhost:4173/`.
 
 ## Project Structure
 
