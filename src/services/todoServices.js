@@ -5,6 +5,7 @@ import { useAuthStore } from '../store/authStore';
 const API_URL = 'http://localhost:3000'; 
 const allowedCategories = ['Trabajo', 'Personal', 'Etc'];
 
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Fetch tasks with optional filters (completed status and category)
 const getTasks = async (filter = {}) => {
@@ -12,6 +13,7 @@ const getTasks = async (filter = {}) => {
   const userId = authStore.user.id;
 
   try {
+    //await wait(500);
     let url = `${API_URL}/todos?user_id=${userId}`;
 
     // Filter by completion status

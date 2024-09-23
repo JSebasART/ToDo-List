@@ -71,6 +71,15 @@
       "description": "0010011",
       "user_id": "3",
       "completed": false
+    },
+    {
+      "id": "32235",
+      "title": "New task",
+      "category": "Personal",
+      "date": "2024-09-10",
+      "description": "I need to buy sun dried tomatoes",
+      "user_id": "3",
+      "completed": false
     }
   ],
   "users": [
