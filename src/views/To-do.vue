@@ -63,11 +63,6 @@
           :deleteTask="deleteTask"
         />
       </div>
-
-      <!-- No Tasks Message -->
-      <div v-if="!todoStore.loading && todoStore.tasks.length === 0" class="text-center mt-8 text-cblack">
-        <p>No tasks available</p>
-      </div>
     </div>
 
     <!-- Footer -->
