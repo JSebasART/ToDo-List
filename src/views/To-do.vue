@@ -1,70 +1,80 @@
 <template>
-  <div class="max-w-3xl mx-auto py-8 px-4 relative">
-    <div class="relative mb-8 flex justify-between items-center flex-wrap">
-      <h2 class="text-3xl font-bold text-center w-full md:w-auto">Your To-Do List</h2>
-      <LogoutBtn class="mt-4 md:mt-0 md:ml-auto" />
-    </div>
-
-    <div class="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0 md:space-x-6">
-      <div class="flex items-center space-x-2">
-        <label for="category" class="font-semibold">Category:</label>
-        <select v-model="todoStore.filter.category" class="border border-gray-300 rounded-lg p-2">
-          <option value="">All</option>
-          <option value="Trabajo">Trabajo</option>
-          <option value="Personal">Personal</option>
-          <option value="Etc">Etc</option>
-        </select>
+  <!-- Flex container for the entire page -->
+  <div class="flex flex-col min-h-screen bg-cwhite">
+    <!-- Main content (Task List) -->
+    <div class="flex-grow max-w-7xl mx-auto py-8 px-4">
+      <!-- Title and Logout button -->
+      <div class="relative mb-8 flex justify-between items-center flex-wrap">
+        <h2 class="text-4xl font-bold text-center w-full md:w-auto text-cblack">Your To-Do List</h2>
+        <LogoutBtn class="mt-4 md:mt-0 md:ml-auto" />
       </div>
 
-      <div class="flex items-center space-x-2">
-        <label for="completed" class="font-semibold">Status:</label>
-        <select v-model="todoStore.filter.completed" class="border border-gray-300 rounded-lg p-2">
-          <option value="">All</option>
-          <option :value="true">Completed</option>
-          <option :value="false">Pending</option>
-        </select>
+      <!-- Filters Section -->
+      <div class="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0 md:space-x-6 bg-cwhite-dark p-4 rounded-lg shadow-md">
+        <div class="flex items-center space-x-2">
+          <label for="category" class="font-semibold text-cblack">Category:</label>
+          <select v-model="todoStore.filter.category" @change="applyFilters" class="border border-cblack rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-corange">
+            <option value="">All</option>
+            <option value="Trabajo">Trabajo</option>
+            <option value="Personal">Personal</option>
+            <option value="Etc">Etc</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="completed" class="font-semibold text-cblack">Status:</label>
+          <select v-model="todoStore.filter.completed" @change="applyFilters" class="border border-cblack rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-corange">
+            <option value="">All</option>
+            <option :value="true">Completed</option>
+            <option :value="false">Pending</option>
+          </select>
+        </div>
       </div>
 
-      <button @click="applyFilter" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg w-full md:w-auto">
-        Apply Filter
+      <!-- Add New Task Button -->
+      <button
+        v-if="!showTaskForm"
+        @click="toggleTaskForm"
+        class="bg-corange hover:bg-opacity-90 text-white py-2 px-4 mb-6 rounded-lg mx-auto block w-full md:w-auto font-semibold shadow-lg transition duration-200 ease-in-out transform hover:scale-105"
+      >
+        Add New Task
       </button>
-    </div>
 
-    <button
-      v-if="!showTaskForm"
-      @click="toggleTaskForm"
-      class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 mb-6 rounded-lg mx-auto block w-full md:w-auto"
-    >
-      Add New Task
-    </button>
-
-    <div class="overflow-x-auto">
-      <TaskTable
-        :tasks="todoStore.tasks"
-        :toggleComplete="toggleComplete"
-        :editTask="editTask"
-        :deleteTask="deleteTask"
+      <!-- New Task Form -->
+      <NewTaskForm
+        v-if="showTaskForm"
+        :taskData="taskEditData"
+        @submit-task="saveTask"
+        @cancel-task="toggleTaskForm"
       />
+
+      <!-- Task Table -->
+      <div class="overflow-x-auto bg-cwhite-dark p-4 rounded-lg shadow-lg">
+        <TaskTable
+          :tasks="todoStore.tasks"
+          :toggleComplete="toggleComplete"
+          :editTask="editTask"
+          :deleteTask="deleteTask"
+        />
+      </div>
+
+      <!-- No Tasks Message -->
+      <div v-if="todoStore.tasks.length === 0" class="text-center mt-8 text-cblack">
+        <p>No tasks available</p>
+      </div>
     </div>
 
-    <div v-if="todoStore.tasks.length === 0" class="text-center mt-8 text-gray-500">
-      <p>No tasks available</p>
-    </div>
-
-    <NewTaskForm
-      v-if="showTaskForm"
-      :taskData="taskEditData"
-      @submit-task="saveTask"
-      @cancel-task="toggleTaskForm"
-    />
+    <!-- Footer, always at the bottom -->
+    <Footer/>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import TaskTable from "../components/TaskTable.vue";
 import NewTaskForm from "../components/NewTaskForm.vue"; 
 import LogoutBtn from "../components/LogoutBtn.vue";
+import Footer from "../components/Footer.vue"; // Importing Footer component
 import { useTodoStore } from "../store/todoStore";
 
 export default {
@@ -72,6 +82,7 @@ export default {
     TaskTable,
     NewTaskForm,
     LogoutBtn,
+    Footer, // Registering Footer component
   },
   setup() {
     const todoStore = useTodoStore();
@@ -87,7 +98,7 @@ export default {
     onMounted(() => {
       todoStore.fetchTasks();
     });
-
+  
     const saveTask = () => {
       if (taskEditData.value.id) {
         todoStore.updateTask(taskEditData.value.id, {
@@ -131,8 +142,11 @@ export default {
       todoStore.deleteTask(taskId);
     };
 
-    const applyFilter = () => {
-      todoStore.applyFilter(todoStore.filter);
+    const applyFilters = () => {
+      todoStore.applyFilter({
+        category: todoStore.filter.category,
+        completed: todoStore.filter.completed,
+      });
     };
 
     return {
@@ -142,13 +156,11 @@ export default {
       toggleComplete,
       deleteTask,
       editTask,
-      applyFilter,
       showTaskForm,
       toggleTaskForm,
+      applyFilters
     };
   },
 };
 </script>
 
-<style scoped>
-</style>

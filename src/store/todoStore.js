@@ -68,8 +68,8 @@ export const useTodoStore = defineStore('todo', {
     },
 
     applyFilter(newFilter) {
-      this.filter = { ...this.filter, ...newFilter };
+      this.filter = { ...newFilter }; // Create a new object
       this.fetchTasks();
-    },
+    },    
   },
 });

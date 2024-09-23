@@ -1,15 +1,6 @@
 {
   "todos": [
     {
-      "id": "4885",
-      "title": "Computes",
-      "category": "Trabajo",
-      "date": "2024-09-25",
-      "description": "0010011",
-      "user_id": "3",
-      "completed": true
-    },
-    {
       "id": "6734",
       "title": "Groceries",
       "category": "Etc",
@@ -34,7 +25,7 @@
       "date": "2024-09-24",
       "description": "",
       "user_id": "3",
-      "completed": false
+      "completed": true
     },
     {
       "id": "4886",
@@ -43,7 +34,7 @@
       "date": "2024-09-25",
       "description": "0010011",
       "user_id": "3",
-      "completed": true
+      "completed": false
     },
     {
       "id": "4887",
@@ -52,7 +43,7 @@
       "date": "2024-09-25",
       "description": "0010011",
       "user_id": "3",
-      "completed": true
+      "completed": false
     },
     {
       "id": "4888",
@@ -61,7 +52,7 @@
       "date": "2024-09-25",
       "description": "0010011",
       "user_id": "3",
-      "completed": true
+      "completed": false
     },
     {
       "id": "4889",

@@ -1,66 +1,65 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <div class="max-w-md mx-auto mt-12 p-8 bg-white shadow-lg rounded-lg relative">
+  <div class="min-h-screen flex flex-col bg-cwhite">
+    <div class="max-w-md mx-auto mt-12 p-8 bg-cwhite-dark shadow-lg rounded-lg relative">
       <div class="relative mb-6">
         <button
-          class="absolute left-0 px-4 py-2 bg-gray-500 text-white text-sm font-semibold rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 flex items-center space-x-2"
+          class="absolute left-0 px-4 py-2 bg-cblack text-white text-sm font-semibold rounded-lg hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-cblack flex items-center space-x-2"
           @click="goToLogin"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-
-        <h2 class="text-3xl font-bold text-center">Join Us!!!</h2>
+        <h2 class="text-3xl font-bold text-center text-cblack">Join Us!!!</h2>
       </div>
       <!-- Registration Form -->
       <form @submit.prevent="registerUser" class="space-y-6">
         <div class="form-group">
-          <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>
+          <label for="name" class="block text-cblack font-semibold mb-2">Name</label>
           <input
             type="text"
             v-model="name"
             id="name"
             required
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            class="w-full px-4 py-2 border border-cblack rounded-lg focus:outline-none focus:ring-2 focus:ring-corange"
           />
         </div>
 
         <div class="form-group">
-          <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+          <label for="email" class="block text-cblack font-semibold mb-2">Email</label>
           <input
             type="email"
             v-model="email"
             id="email"
             required
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            class="w-full px-4 py-2 border border-cblack rounded-lg focus:outline-none focus:ring-2 focus:ring-corange"
           />
         </div>
 
         <div class="form-group">
-          <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+          <label for="password" class="block text-cblack font-semibold mb-2">Password</label>
           <input
             type="password"
             v-model="password"
             id="password"
             required
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            class="w-full px-4 py-2 border border-cblack rounded-lg focus:outline-none focus:ring-2 focus:ring-corange"
           />
         </div>
 
         <div class="form-group">
-          <label for="confirmPassword" class="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+          <label for="confirmPassword" class="block text-cblack font-semibold mb-2">Confirm Password</label>
           <input
             type="password"
             v-model="confirmPassword"
             id="confirmPassword"
             required
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            class="w-full px-4 py-2 border border-cblack rounded-lg focus:outline-none focus:ring-2 focus:ring-corange"
           />
         </div>
 
         <button
-          class="w-full py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+          class="w-full py-2 bg-corange text-white font-semibold rounded-lg hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-corange"
           @click="handleRedirect"
         >
           Register
@@ -148,3 +147,26 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Using your custom color scheme */
+.bg-cwhite {
+  background-color: #FAF7F0;
+}
+
+.bg-cwhite-dark {
+  background-color: #D8D2C2;
+}
+
+.text-cblack {
+  color: #4A4947;
+}
+
+.bg-corange {
+  background-color: #B17457;
+}
+
+button:focus {
+  box-shadow: 0 0 0 2px rgba(177, 116, 87, 0.5);
+}
+</style>

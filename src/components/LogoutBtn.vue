@@ -1,5 +1,8 @@
 <template>
-  <button @click="logout" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600">
+  <button 
+    @click="logout" 
+    class="bg-corange text-white py-2 px-6 rounded-lg font-semibold shadow-lg hover:bg-opacity-90 transition duration-200 ease-in-out transform hover:scale-105"
+  >
     Logout
   </button>
 </template>
@@ -13,6 +16,6 @@ const router = useRouter();
 
 const logout = () => {
   authStore.logout();
-  router.push("/")
+  router.push("/");
 };
 </script>

@@ -1,36 +1,38 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col bg-cwhite">
     <!-- Main content -->
-    <div class="flex flex-col md:flex-row justify-between max-w-5xl mx-auto mt-12 mb-8 p-8 shadow-lg bg-cwhite rounded-lg">
+    <div class="flex flex-col md:flex-row justify-between max-w-5xl mx-auto mt-12 mb-8 p-8 shadow-lg bg-cwhite-dark rounded-lg">
       <!-- Information about the app -->
       <div class="flex-1 pr-6">
-        <h2 class="text-2xl font-bold mb-4 text-center">Welcome to the To-Do List App</h2>
-        <p class="mb-4">A well-organized to-do list is an essential tool for productivity. It helps you:</p>
-        <ul class="list-disc list-inside mb-4">
+        <h2 class="text-2xl font-bold mb-4 text-center text-cblack">Welcome to the To-Do List App</h2>
+        <p class="mb-4 text-cblack">A well-organized to-do list is an essential tool for productivity. It helps you:</p>
+        <ul class="list-disc list-inside mb-4 text-cblack">
           <li>Stay on top of your daily tasks</li>
           <li>Keep track of long-term goals</li>
           <li>Reduce stress by organizing your thoughts</li>
           <li>Increase motivation as you check off completed tasks</li>
         </ul>
-        <p class="mt-4">
+        <p class="mt-4 text-cblack">
           Our app is designed to simplify your life by offering a clean, intuitive interface to manage your tasks. Simply log in and start organizing your day!
         </p>
       </div>
       <!-- Login form -->
-      <div class="flex-1 border-t md:border-l md:border-t-0 border-gray-300 pt-6 md:pt-0 md:pl-6">
-        <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+      <div class="flex-1 border-t md:border-l md:border-t-0 border-cblack pt-6 md:pt-0 md:pl-6">
+        <h2 class="text-2xl font-bold mb-4 text-center text-cblack">Login</h2>
         <form @submit.prevent="login" class="space-y-4">
           <div class="form-group">
-            <label for="email" class="block text-gray-700">Email</label>
-            <input type="email" v-model="email" id="email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <label for="email" class="block text-cblack">Email</label>
+            <input type="email" v-model="email" id="email" required class="w-full px-4 py-2 border border-cblack rounded-lg focus:outline-none focus:ring-2 focus:ring-corange" />
           </div>
           <div class="form-group">
-            <label for="password" class="block text-gray-700">Password</label>
-            <input type="password" v-model="password" id="password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <label for="password" class="block text-cblack">Password</label>
+            <input type="password" v-model="password" id="password" required class="w-full px-4 py-2 border border-cblack rounded-lg focus:outline-none focus:ring-2 focus:ring-corange" />
           </div>
-          <button type="submit" class="w-full py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 focus:outline-none">Login</button>
-          <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+          <button type="submit" class="w-full py-2 bg-corange text-white font-semibold rounded-lg hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-corange">Login</button>
           <button type="button" @click="redirectToRegister" class="w-full py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 mt-4 focus:outline-none">Register</button>
+          <p v-if="errorMessage" class="text-red text-md font-semibold mt-4 p-3 rounded-lg mx-auto">
+            {{ errorMessage }}
+          </p>
         </form>
       </div>
     </div>
